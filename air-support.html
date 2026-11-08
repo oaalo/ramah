@@ -160,7 +160,6 @@
             margin: 1.2rem 0 0.5rem;
         }
 
-        .audio-section {
             margin-top: 1.8rem;
             padding-top: 1.5rem;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -169,7 +168,6 @@
             align-items: center;
             gap: 16px;
         }
-        .audio-section .label {
             color: #d6c5c5;
             font-weight: 700;
             font-size: 0.95rem;
@@ -177,8 +175,6 @@
             align-items: center;
             gap: 8px;
         }
-        .audio-section .label i { color: #e6c0a4; }
-        .audio-btn {
             background: rgba(46, 204, 113, 0.15);
             border: 1px solid #2ecc71;
             color: #2ecc71;
@@ -194,8 +190,6 @@
             gap: 8px;
             backdrop-filter: blur(4px);
         }
-        .audio-btn:hover { background: rgba(46, 204, 113, 0.25); transform: scale(1.02); }
-        .audio-btn:disabled {
             opacity: 0.3;
             cursor: not-allowed;
             transform: none;
@@ -203,7 +197,6 @@
             border-color: rgba(255, 255, 255, 0.1);
             color: #88a9c4;
         }
-        .audio-status {
             font-size: 0.85rem;
             color: #d6c5c5;
             min-width: 100px;
@@ -291,14 +284,6 @@
 <script>
     (function() {
         'use strict';
-        const slideAudioUrls = [
-            'https://www.youtube.com/watch?v=example1',
-            'https://www.example.com/audio2.mp3',
-            'https://www.youtube.com/watch?v=example3',
-            'https://www.example.com/audio4.mp3',
-            'https://www.youtube.com/watch?v=example5',
-            'https://www.example.com/audio6.mp3'
-        ];
 
         const slidesData = [{
             title: '🚁 تعريف الدعم الجوي',
@@ -423,8 +408,6 @@
 
         const total = slidesData.length;
         let currentIndex = 0;
-        let currentAudio = null;
-        let currentIframe = null;
 
         const wrapper = document.getElementById('slideWrapper');
         const dotsContainer = document.getElementById('dotsContainer');
@@ -432,47 +415,7 @@
         const nextBtn = document.getElementById('nextBtn');
         const currentNumSpan = document.getElementById('currentSlideNum');
         const totalNumSpan = document.getElementById('totalSlidesNum');
-
-        function playAudioFromUrl(url, slideIndex) {
-            if (!url) { alert('لا يوجد رابط صوت مخصص لهذا السلايد.'); return; }
-            if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-            if (currentIframe) { currentIframe.remove(); currentIframe = null; }
-
-            if (url.includes('youtube.com') || url.includes('youtu.be')) {
-                let videoId = '';
-                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-                const match = url.match(regExp);
-                if (match && match[2].length === 11) videoId = match[2];
-                else { const urlParams = new URLSearchParams(new URL(url).search); videoId = urlParams.get('v') || ''; }
-                if (!videoId) { alert('تعذر استخراج معرف الفيديو.'); return; }
-                const iframe = document.createElement('iframe');
-                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&rel=0&showinfo=0&iv_load_policy=3&modestbranding=1&playsinline=1`;
-                iframe.width = '1'; iframe.height = '1';
-                iframe.style.cssText = 'border:none;position:absolute;opacity:0;pointer-events:none;';
-                iframe.allow = 'autoplay; encrypted-media';
-                const activeSlide = document.querySelector(`.slide[data-index="${slideIndex}"]`);
-                if (activeSlide) {
-                    activeSlide.appendChild(iframe);
-                    currentIframe = iframe;
-                    const statusSpan = document.getElementById(`status-${slideIndex}`);
-                    if (statusSpan) statusSpan.textContent = '▶️ تشغيل يوتيوب...';
-                    setTimeout(() => { if (statusSpan && currentIframe) statusSpan.innerHTML = `<i class="fas fa-check-circle" style="color:#2ecc71;"></i> جاري التشغيل`; }, 3000);
-                }
-                return;
-            }
-            try {
-                const audio = new Audio(url);
-                audio.play().catch(() => { if (confirm('تعذر التشغيل، هل تريد فتح الرابط؟')) window.open(url, '_blank'); });
-                currentAudio = audio;
-                const statusSpan = document.getElementById(`status-${slideIndex}`);
-                if (statusSpan) statusSpan.textContent = '▶️ جاري التشغيل...';
-                audio.onplay = () => { if (statusSpan) statusSpan.innerHTML = `<i class="fas fa-check-circle" style="color:#2ecc71;"></i> يتم التشغيل`; };
-                audio.onended = () => { if (statusSpan) statusSpan.innerHTML = `<i class="fas fa-check-circle" style="color:#2ecc71;"></i> انتهى التشغيل`; };
-                audio.onerror = () => { currentAudio = null; if (confirm('تعذر تشغيل الملف، هل تريد فتح الرابط؟')) window.open(url, '_blank'); };
-            } catch { alert('حدث خطأ.'); }
-        }
-
-        function buildSlides() {
+function buildSlides() {
             wrapper.innerHTML = '';
             slidesData.forEach((s, idx) => {
                 const div = document.createElement('div');
@@ -487,25 +430,7 @@
                 contentDiv.innerHTML = s.content;
                 div.appendChild(contentDiv);
 
-                const audioSection = document.createElement('div');
-                audioSection.className = 'audio-section';
-                const label = document.createElement('span');
-                label.className = 'label';
-                label.innerHTML = '<i class="fas fa-headphones-alt"></i> الصوت';
-                audioSection.appendChild(label);
-                const playBtn = document.createElement('button');
-                playBtn.className = 'audio-btn';
-                playBtn.innerHTML = '<i class="fas fa-play"></i> تشغيل الصوت';
-                playBtn.dataset.index = idx;
-                const statusSpan = document.createElement('span');
-                statusSpan.className = 'audio-status';
-                statusSpan.id = `status-${idx}`;
-                playBtn.addEventListener('click', function() { const index = parseInt(this.dataset.index); const url = slideAudioUrls[index] || ''; playAudioFromUrl(url, index); });
-                audioSection.appendChild(playBtn);
-                audioSection.appendChild(statusSpan);
-                div.appendChild(audioSection);
                 wrapper.appendChild(div);
-                updateStatus(idx);
             });
 
             dotsContainer.innerHTML = '';
@@ -520,22 +445,12 @@
             updateUI();
         }
 
-        function updateStatus(index) {
-            const statusSpan = document.getElementById(`status-${index}`);
-            if (!statusSpan) return;
-            const url = slideAudioUrls[index] || '';
-            statusSpan.innerHTML = url ? `<i class="fas fa-check-circle" style="color:#2ecc71;"></i> رابط جاهز` : `<i class="fas fa-circle" style="color:#d6c5c5;"></i> لا يوجد رابط`;
-        }
-        function updateAllStatus() { for (let i = 0; i < total; i++) updateStatus(i); }
         function goToSlide(index) {
             if (index < 0 || index >= total) return;
-            if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-            if (currentIframe) { currentIframe.remove(); currentIframe = null; }
             currentIndex = index;
             updateUI();
             document.querySelectorAll('.slide').forEach((el, i) => el.classList.toggle('active', i === currentIndex));
             document.querySelectorAll('.dot').forEach((el, i) => el.classList.toggle('active', i === currentIndex));
-            updateAllStatus();
         }
         function updateUI() {
             currentNumSpan.textContent = currentIndex + 1;
@@ -551,7 +466,6 @@
         });
 
         buildSlides();
-        setTimeout(updateAllStatus, 50);
     })();
 </script>
 </body>
