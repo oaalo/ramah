@@ -2,8 +2,25 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>الأكاديمية الذكية - الهلال الأحمر لمحافظة الرمح</title>
+    <meta name="description" content="الأكاديمية الذكية للهلال الأحمر لمحافظة الرمح: القوانين، التوظيف، الدورات التدريبية، نظام المكافآت، وأدوات ميدانية." />
+    <link rel="canonical" href="https://oaalo.github.io/ramah/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="الأكاديمية الذكية - الهلال الأحمر لمحافظة الرمح" />
+    <meta property="og:url" content="https://oaalo.github.io/ramah/" />
+    <meta property="og:locale" content="ar_SA" />
+    <meta property="og:image:alt" content="شعار الهلال الأحمر لمحافظة الرمح" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="الأكاديمية الذكية - الهلال الأحمر لمحافظة الرمح" />
+    <meta name="twitter:description" content="منصة متكاملة لتوظيف وتطوير الهلال الأحمر لمحافظة الرمح" />
+    <meta name="twitter:image" content="logo.svg" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
 
     <meta property="og:title" content="الأكاديمية الذكية - الهلال الأحمر لمحافظة الرمح" />
     <meta property="og:description" content="منصة متكاملة لتوظيف وتطوير الهلال الأحمر لمحافظة الرمح" />
@@ -12,7 +29,7 @@
     <link rel="icon" type="image/svg+xml" href="logo.svg" />
 
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;800;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-5e2ESR8Ycmos6g3gAKr1Jvwye8sW4U1u/cAKulfVJnkakCcMqhOudbtPnvJ+nbv7" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
         /* ===== RESET & BASE ===== */
@@ -250,6 +267,9 @@
             gap: 1.8rem;
         }
         .section-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(224, 181, 146, 0.06);
@@ -300,6 +320,15 @@
             transition: 0.3s;
         }
         .section-card:hover .arrow { transform: translateX(-5px); }
+
+        /* ===== إتاحة الوصول بالكيبورد ===== */
+        a:focus-visible,
+        button:focus-visible,
+        .section-card:focus-visible {
+            outline: 2px solid #e0b592;
+            outline-offset: 3px;
+            border-radius: 12px;
+        }
 
         /* ===== المحتوى الديناميكي ===== */
         .content-wrapper {
@@ -642,15 +671,15 @@
         </div>
 
         <div class="nav-links">
-            <a onclick="scrollToHome()">الرئيسية</a>
-            <a onclick="loadContent('laws')">القوانين</a>
-            <a onclick="loadContent('job')">التوظيف</a>
-            <a onclick="loadContent('careers')">الدورات</a>
-            <a onclick="loadContent('rewards')">المكافآت</a>
+            <a href="./" onclick="scrollToHome(); return false;">الرئيسية</a>
+            <a href="./laws" onclick="loadContent('laws'); return false;">القوانين</a>
+            <a href="./job" onclick="loadContent('job'); return false;">التوظيف</a>
+            <a href="./careers" onclick="loadContent('careers'); return false;">الدورات</a>
+            <a href="./rewards" onclick="loadContent('rewards'); return false;">المكافآت</a>
         </div>
 
         <div class="navbar-right">
-            <a href="https://discord.gg/rm8" target="_blank" class="logo">
+            <a href="https://discord.gg/rm8" target="_blank" class="logo" rel="noopener noreferrer">
                 <img src="logo.svg" alt="شعار محافظة الرمح" />
                 <span class="brand-text">الأكاديمية الذكية</span>
             </a>
@@ -674,30 +703,30 @@
 
     <!-- ===== البطاقات ===== -->
     <div class="sections-grid" id="sectionsGrid">
-        <div class="section-card" onclick="loadContent('laws')">
+        <a class="section-card" href="./laws" onclick="loadContent('laws'); return false;">
             <span class="icon">📜</span>
             <h3>القوانين</h3>
             <p>اللوائح والأنظمة والمخالفات</p>
             <span class="arrow">←</span>
-        </div>
-        <div class="section-card" onclick="loadContent('job')">
+        </a>
+        <a class="section-card" href="./job" onclick="loadContent('job'); return false;">
             <span class="icon">💼</span>
             <h3>منصة التوظيف</h3>
             <p>فرص لإزدهار شباب المستقبل</p>
             <span class="arrow">←</span>
-        </div>
-        <div class="section-card" onclick="loadContent('careers')">
+        </a>
+        <a class="section-card" href="./careers" onclick="loadContent('careers'); return false;">
             <span class="icon">🏆</span>
             <h3>منصة الدورات</h3>
             <p>فرص العمل ودورات التدريبية</p>
             <span class="arrow">←</span>
-        </div>
-        <div class="section-card" onclick="loadContent('rewards')">
+        </a>
+        <a class="section-card" href="./rewards" onclick="loadContent('rewards'); return false;">
             <span class="icon">🎁</span>
             <h3>نظام المكافآت</h3>
             <p>آليات التقدير والحوافز</p>
             <span class="arrow">←</span>
-        </div>
+        </a>
     </div>
 
     <!-- ===== المحتوى الديناميكي ===== -->
@@ -721,7 +750,7 @@
             </button>
             <div class="copy-feedback" id="copyFeedback">✅ تم النسخ!</div>
             <div class="modal-footer">
-                <a href="https://discord.com/users/408308082402131969" target="_blank">
+                <a href="https://discord.com/users/408308082402131969" target="_blank" rel="noopener noreferrer">
                     <i class="fas fa-external-link-alt"></i> فتح الملف الشخصي
                 </a>
             </div>
@@ -730,7 +759,7 @@
 
     <!-- ===== الفوتر ===== -->
     <footer class="footer">
-        <p>© 2026 الأكاديمية الذكية | <a href="https://discord.gg/rm8" target="_blank">الهلال الأحمر لمحافظة الرمح</a> | جهاد 511</p>
+        <p>© 2026 الأكاديمية الذكية | <a href="https://discord.gg/rm8" target="_blank" rel="noopener noreferrer">الهلال الأحمر لمحافظة الرمح</a> | جهاد 511</p>
     </footer>
 
     <!-- ===== السكريبتات ===== -->
@@ -855,13 +884,16 @@
                 .then(html => {
                     dynamic.innerHTML = html;
                 })
-                .catch(err => {
+                .catch(() => {
+                    // رسالة ثابتة بدل إدراج نص الخطأ في HTML (أكثر أماناً وأوضح للزائر)
                     dynamic.innerHTML = `
                         <div style="text-align:center;padding:2rem;color:#d18b68;">
                             <i class="fas fa-exclamation-triangle" style="font-size:2rem;display:block;margin-bottom:1rem;"></i>
-                            <strong>حدث خطأ:</strong> ${err.message}
+                            <strong>تعذر تحميل هذا القسم.</strong>
                             <br><br>
-                            <span style="color:#8a8a8a;font-size:0.9rem;">تأكد من رفع ملف ${section}.html في نفس المجلد.</span>
+                            <span style="color:#8a8a8a;font-size:0.9rem;">تأكد من اتصالك بالإنترنت ثم أعد المحاولة.</span>
+                            <br><br>
+                            <button class="btn-red" onclick="loadContent('${section}')"><i class="fas fa-rotate-right"></i> إعادة المحاولة</button>
                         </div>
                     `;
                 });
@@ -981,5 +1013,6 @@
         console.log('🚀 ji© | Discord: .ji. | ID: 408308082402131969');
     </script>
 
+    <script src="protect.js" defer></script>
 </body>
 </html>

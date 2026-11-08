@@ -2,10 +2,25 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>دورة الدعم الجوي - الهلال الأحمر (سلايدات)</title>
+    <meta name="description" content="دورة الدعم الجوي: إخلاء جوي، سلامة الطيران، والتنسيق مع مركز العمليات." />
+    <meta name="theme-color" content="#17100e" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="الأكاديمية الذكية - الهلال الأحمر لمحافظة الرمح" />
+    <meta property="og:title" content="دورة الدعم الجوي - الهلال الأحمر لمحافظة الرمح" />
+    <meta property="og:description" content="دورة الدعم الجوي: إخلاء جوي، سلامة الطيران، والتنسيق مع مركز العمليات." />
+    <meta property="og:image" content="logo.svg" />
+    <meta property="og:locale" content="ar_SA" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" type="image/svg+xml" href="logo.svg" />
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-5e2ESR8Ycmos6g3gAKr1Jvwye8sW4U1u/cAKulfVJnkakCcMqhOudbtPnvJ+nbv7" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* نفس الستايلات السابقة (موحدة لجميع الملفات) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -437,6 +452,8 @@ function buildSlides() {
             for (let i = 0; i < total; i++) {
                 const dot = document.createElement('button');
                 dot.className = `dot ${i === currentIndex ? 'active' : ''}`;
+                dot.setAttribute('aria-label', `السلايد رقم ${i + 1}`);
+                dot.type = 'button';
                 dot.dataset.index = i;
                 dot.addEventListener('click', () => goToSlide(i));
                 dotsContainer.appendChild(dot);
@@ -468,5 +485,6 @@ function buildSlides() {
         buildSlides();
     })();
 </script>
+    <script src="protect.js" defer></script>
 </body>
 </html>
