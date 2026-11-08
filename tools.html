@@ -1,0 +1,53 @@
+<div class="content-body">
+    <!-- ===== العنوان ===== -->
+    <div class="section-header">
+        <h2>🎖️ مولد الأسامي الميدانيه</h2>
+    </div>
+    <div class="section-desc" style="color: #e2e8f0; line-height: 2; font-weight: 600; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">
+    🔶 توزيع الميداني للهلال الأحمر<br>
+    🔸 طريقة إستلام توزيعك الميداني عبر روم العمليات في ديسكورد وفي حال تواجد احد فالروم توجه للموجة عبر الراديو وأستلم توزيعك من أعلى رتبة مباشره فالميدان (قياده > مشرف عام > مشرف ميداني > مركز/نائب العمليات)
+</div>
+
+    <!-- ===== المحتوى ===== -->
+    <div class="tools-box">
+        <div class="select-group">
+            <div class="sel">
+                <label><i class="fas fa-user-tie"></i> توزيع الرتب</label>
+                <select id="roleSelect">
+                    <option value="" disabled selected>اختر رتبتك</option>
+                    <option value="قيادة الهلال الأحمر">قيادة الهلال الأحمر</option>
+                    <option value="مشرف عام">مشرف عام</option>
+                    <option value="مشرف ميداني">مشرف ميداني</option>
+                    <option value="مركز عمليات">مركز عمليات</option>
+                    <option value="نائب مركز العمليات">نائب مركز العمليات</option>
+                    <option value="لام">لام</option>
+                    <option value="سين">سين</option>
+                    <option value="باء">باء</option>
+                </select>
+            </div>
+            <div class="sel">
+                <label><i class="fas fa-hashtag"></i> توزيع الأرقام</label>
+                <select id="numberSelect">
+                    <option value="" disabled selected>اختر رقم توزيعك</option>
+                </select>
+            </div>
+            <div class="sel">
+                <label><i class="fas fa-id-card"></i> الكود الوظيفي</label>
+                <input type="text" id="idCode" placeholder="مثال E-004" />
+            </div>
+        </div>
+
+        <div class="result-row">
+            <span class="code-text placeholder" id="result1">اختر البيانات لإنشاء الكود</span>
+            <button class="copy-btn" id="copyBtn1" onclick="copyResult('result1', this)" disabled><i class="fas fa-copy"></i> نسخ</button>
+        </div>
+        <div class="result-row">
+            <span class="code-text placeholder" id="result2">اختر البيانات لإنشاء الكود</span>
+            <button class="copy-btn" id="copyBtn2" onclick="copyResult('result2', this)" disabled><i class="fas fa-copy"></i> نسخ</button>
+        </div>
+    </div>
+
+    <div style="text-align:center;margin-top:25px;color:#94a3b8;border-top:1px solid rgba(209,139,104,0.08);padding-top:20px;">
+        <p><i class="fas fa-crown"></i> © 2026 جهاد عبدالله – <a href="https://discord.gg/rm8" target="_blank" style="color:#e3b295;text-decoration:none;">الهلال الأحمر لمحافظة الرمح</a> <i class="fas fa-shield-alt"></i></p>
+    </div>
+</div>
