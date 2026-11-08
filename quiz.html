@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -215,6 +215,23 @@
         .review-item .why { color: #8fa0b4; font-size: 0.87rem; margin-top: 0.35rem; }
         .review-item .why i { color: #d18b68; }
 
+        /* ===== مشاركة النتيجة ===== */
+        .share-panel {
+            margin-top: 0.4rem; padding: 1.1rem clamp(0.9rem, 3vw, 1.4rem);
+            border-radius: 18px;
+            background: rgba(224, 181, 146, 0.045);
+            border: 1px solid rgba(224, 181, 146, 0.12);
+        }
+        .share-title { font-size: 1.05rem; font-weight: 900; margin-bottom: 0.35rem; }
+        .share-sub { font-size: 0.85rem; line-height: 1.9; margin-bottom: 1rem; }
+        .share-actions { justify-content: center; }
+        .image-wrap { margin-top: 1.2rem; display: grid; gap: 0.8rem; justify-items: center; }
+        .image-wrap img {
+            width: 100%; max-width: 340px; height: auto; display: block;
+            border-radius: 16px; border: 1px solid rgba(224, 181, 146, 0.18);
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+        }
+
         .hidden { display: none !important; }
         .note-box {
             font-size: 0.85rem; color: #94a3b8; line-height: 1.9;
@@ -229,6 +246,10 @@
             .brand span { display: none; }
             .option { font-size: 0.92rem; padding: 0.8rem 0.85rem; }
             .exam-actions .btn { flex: 1; }
+            .share-actions { display: grid; grid-template-columns: 1fr 1fr; }
+            .share-actions #shareBtn { grid-column: 1 / -1; }
+            .share-actions .btn, .image-wrap .btn { font-size: 0.86rem; padding: 0.7rem 0.5rem; white-space: nowrap; gap: 0.35rem; }
+            .image-wrap .btn-row { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
         }
     </style>
 </head>
@@ -251,7 +272,7 @@
         <div class="quiz-list" id="quizList"></div>
         <div class="note-box">
             <i class="fas fa-shield-alt"></i>
-            الاختبار نظام داخلي للتقييم والتدريب، والنتيجة تُحفظ على جهازك فقط. لإرسال النتيجة للإدارة استخدم زر «نسخ النتيجة» بعد الانتهاء وأرسلها في الديسكورد.
+            الاختبار نظام داخلي للتقييم والتدريب، والنتيجة تُحفظ على جهازك فقط. بعد الانتهاء تقدر تشارك نتيجتك كنص أو كصورة بطاقة جاهزة من قسم «شارك نتيجتك»، وأرسلها للإدارة في الديسكورد.
         </div>
     </section>
 
@@ -320,12 +341,28 @@
             <div class="verdict" id="verdict">—</div>
             <p class="muted" id="scoreDetail"></p>
         </div>
-        <div class="btn-row" style="justify-content:center;margin-bottom:0.6rem;">
+        <div class="btn-row" style="justify-content:center;margin-bottom:1.3rem;">
             <button type="button" class="btn" id="retryBtn"><i class="fas fa-rotate-right"></i> إعادة المحاولة</button>
-            <button type="button" class="btn btn-ghost" id="copyBtn"><i class="fas fa-copy"></i> نسخ النتيجة</button>
             <a class="btn btn-ghost" href="./careers"><i class="fas fa-arrow-right"></i> الدورات</a>
         </div>
-        <p class="muted" id="copyHint" style="text-align:center;font-size:0.85rem;"></p>
+
+        <div class="share-panel">
+            <h2 class="share-title"><i class="fas fa-share-nodes" style="color:#d18b68;"></i> شارك نتيجتك</h2>
+            <p class="muted share-sub">نسخة نص للإدارة في الديسكورد، أو بطاقة صورة تقدر تنزّلها أو تشاركها مباشرة — اختر اللي يناسبك.</p>
+            <div class="btn-row share-actions">
+                <button type="button" class="btn btn-ghost" id="copyBtn"><i class="fas fa-copy"></i> نسخ كنص</button>
+                <button type="button" class="btn btn-ghost" id="imageBtn"><i class="fas fa-image"></i> إنشاء صورة</button>
+                <button type="button" class="btn" id="shareBtn"><i class="fas fa-share-nodes"></i> مشاركة</button>
+            </div>
+            <div id="imageWrap" class="image-wrap hidden">
+                <img id="resultImg" alt="بطاقة نتيجة الاختبار" />
+                <div class="btn-row" style="justify-content:center;">
+                    <a class="btn" id="downloadBtn" download="result.png"><i class="fas fa-download"></i> تنزيل الصورة</a>
+                    <button type="button" class="btn btn-ghost" id="copyImgBtn"><i class="fas fa-clipboard"></i> نسخ الصورة</button>
+                </div>
+            </div>
+            <p class="muted" id="copyHint" role="status" aria-live="polite" style="text-align:center;font-size:0.85rem;min-height:1.4em;margin-top:0.8rem;"></p>
+        </div>
         <h2 style="margin-top:1.6rem;"><i class="fas fa-list-check" style="color:#d18b68;margin-left:0.4rem;"></i> مراجعة الإجابات</h2>
         <div class="review" id="reviewList"></div>
     </section>
@@ -441,6 +478,7 @@
         answers = runtime.map(() => null);
         index = 0;
         remaining = quiz.minutes * 60;
+        resetCard();
 
         el('submitBtn').disabled = false;
         renderQuestion();
@@ -597,12 +635,17 @@
         el('copyBtn').disabled = false;
         lastResult = { pct: pct, correct: correct, total: total, passed: passed, review: review };
         show('result');
+        // تجهيز الصورة مسبقاً حتى تكون المشاركة فورية
+        getCardBlob().catch(function () {});
     }
 
     let lastResult = null;
 
-    function copyResult() {
-        if (!lastResult) return;
+    /* ============ مشاركة النتيجة (نص + صورة) ============ */
+    function setHint(msg) { el('copyHint').textContent = msg; }
+
+    function resultText() {
+        if (!lastResult) return '';
         const lines = [
             '📋 نتيجة اختبار: ' + quiz.title,
             'الاسم: ' + (identity.name || '—'),
@@ -610,32 +653,360 @@
             'العمر: ' + (identity.age || '—'),
             'النتيجة: ' + lastResult.correct + '/' + lastResult.total + ' (' + lastResult.pct + '%)',
             'الحالة: ' + (lastResult.passed ? 'ناجح ✅' : 'غير مجتاز ❌'),
-            'التاريخ: ' + new Date().toLocaleString('ar-SA')
+            'التاريخ: ' + new Date().toLocaleString('ar-EG')
         ];
         const wrong = lastResult.review.filter((r) => !r.ok);
         if (wrong.length) {
             lines.push('', 'أخطاء:');
             wrong.forEach((r, i) => lines.push((i + 1) + ') ' + r.q));
         }
-        const text = lines.join('\n');
-        const done = () => { el('copyHint').textContent = '✅ تم نسخ النتيجة — أرسلها في الديسكورد.'; };
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(text).then(done).catch(fallbackCopy);
-        } else {
-            fallbackCopy();
+        return lines.join('\n');
+    }
+
+    function copyText(text) {
+        if (!text) return Promise.resolve(false);
+        return new Promise((resolve) => {
+            const done = () => { setHint('✅ تم نسخ النتيجة كنص — أرسلها في الديسكورد.'); resolve(true); };
+            const fallback = () => {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.setAttribute('readonly', '');
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                let ok = false;
+                try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+                document.body.removeChild(ta);
+                if (ok) { done(); }
+                else { setHint('تعذر النسخ تلقائياً، حدد النص وانسخه يدوياً.'); resolve(false); }
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(done).catch(fallback);
+            } else {
+                fallback();
+            }
+        });
+    }
+
+    /* ---- بطاقة الصورة ---- */
+    const CARD = { w: 1080, h: 1440 };
+    const FONT = 'Tajawal, Tahoma, Arial, sans-serif';
+    let cardBlob = null;
+    let cardUrl = null;
+    let cardBuilding = null;
+
+    function resetCard() {
+        cardBlob = null;
+        cardBuilding = null;
+        if (cardUrl) { URL.revokeObjectURL(cardUrl); cardUrl = null; }
+        const wrap = el('imageWrap');
+        if (wrap) wrap.classList.add('hidden');
+        const img = el('resultImg');
+        if (img) img.removeAttribute('src');
+        setHint('');
+    }
+
+    function roundRectPath(ctx, x, y, w, h, r) {
+        const rr = Math.min(r, w / 2, h / 2);
+        ctx.beginPath();
+        ctx.moveTo(x + rr, y);
+        ctx.lineTo(x + w - rr, y);
+        ctx.quadraticCurveTo(x + w, y, x + w, y + rr);
+        ctx.lineTo(x + w, y + h - rr);
+        ctx.quadraticCurveTo(x + w, y + h, x + w - rr, y + h);
+        ctx.lineTo(x + rr, y + h);
+        ctx.quadraticCurveTo(x, y + h, x, y + h - rr);
+        ctx.lineTo(x, y + rr);
+        ctx.quadraticCurveTo(x, y, x + rr, y);
+        ctx.closePath();
+    }
+
+    function loadImg(src) {
+        return new Promise((resolve, reject) => {
+            const im = new Image();
+            im.onload = () => resolve(im);
+            im.onerror = reject;
+            im.src = src;
+        });
+    }
+
+    function wrapText(ctx, text, maxW) {
+        const words = String(text).split(/\s+/);
+        const lines = [];
+        let line = '';
+        words.forEach((w) => {
+            const test = line ? line + ' ' + w : w;
+            if (ctx.measureText(test).width > maxW && line) {
+                lines.push(line);
+                line = w;
+            } else {
+                line = test;
+            }
+        });
+        if (line) lines.push(line);
+        return lines;
+    }
+
+    function drawFit(ctx, text, maxW, size, weight) {
+        let s = size;
+        do {
+            ctx.font = weight + ' ' + s + 'px ' + FONT;
+            if (ctx.measureText(text).width <= maxW) break;
+            s -= 2;
+        } while (s > 18);
+    }
+
+    async function buildCard() {
+        if (document.fonts && document.fonts.ready) {
+            try { await document.fonts.ready; } catch (e) {}
         }
-        function fallbackCopy() {
-            const ta = document.createElement('textarea');
-            ta.value = text;
-            ta.setAttribute('readonly', '');
-            ta.style.position = 'fixed';
-            ta.style.opacity = '0';
-            document.body.appendChild(ta);
-            ta.select();
-            try { document.execCommand('copy'); done(); }
-            catch (e) { el('copyHint').textContent = 'تعذر النسخ تلقائياً، حدد النص وانسخه يدوياً.'; }
-            document.body.removeChild(ta);
+        const W = CARD.w;
+        const H = CARD.h;
+        const c = document.createElement('canvas');
+        c.width = W;
+        c.height = H;
+        const ctx = c.getContext('2d');
+        if (!ctx) throw new Error('no canvas');
+
+        const pass = !!(lastResult && lastResult.passed);
+        const accent = pass ? '#86e0a7' : '#ff9c8a';
+        const pct = lastResult ? lastResult.pct : 0;
+
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
+        ctx.direction = 'rtl';
+
+        /* الخلفية */
+        ctx.fillStyle = '#0d0d0d';
+        ctx.fillRect(0, 0, W, H);
+        let g = ctx.createRadialGradient(W * 0.78, H * 0.03, 0, W * 0.78, H * 0.03, H * 0.7);
+        g.addColorStop(0, 'rgba(224,181,146,0.20)');
+        g.addColorStop(1, 'rgba(224,181,146,0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, W, H);
+        g = ctx.createRadialGradient(W * 0.1, H * 0.99, 0, W * 0.1, H * 0.99, H * 0.65);
+        g.addColorStop(0, 'rgba(169,97,74,0.36)');
+        g.addColorStop(1, 'rgba(169,97,74,0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, W, H);
+
+        /* الإطار */
+        ctx.strokeStyle = 'rgba(224,181,146,0.20)';
+        ctx.lineWidth = 3;
+        roundRectPath(ctx, 34, 34, W - 68, H - 68, 52);
+        ctx.stroke();
+
+        /* الشعار */
+        try {
+            const logo = await loadImg('logo.svg');
+            const lr = 52;
+            const cyL = 92 + lr;
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(W / 2, cyL, lr, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.clip();
+            ctx.drawImage(logo, W / 2 - lr, 92, lr * 2, lr * 2);
+            ctx.restore();
+            ctx.beginPath();
+            ctx.arc(W / 2, cyL, lr, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(224,181,146,0.32)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        } catch (e) {}
+
+        /* الهوية */
+        ctx.fillStyle = '#f5f5f5';
+        ctx.font = "900 46px " + FONT;
+        ctx.fillText('الأكاديمية الذكية', W / 2, 252);
+        ctx.fillStyle = '#cbb5a4';
+        ctx.font = "400 28px " + FONT;
+        ctx.fillText('محافظة الرمح · الهلال الأحمر', W / 2, 296);
+
+        /* عنوان الاختبار */
+        ctx.fillStyle = '#e0b592';
+        ctx.font = "800 40px " + FONT;
+        const titleLines = wrapText(ctx, quiz ? quiz.title : 'اختبار', W - 260).slice(0, 2);
+        titleLines.forEach((l, i) => ctx.fillText(l, W / 2, 372 + i * 52));
+
+        /* حلقة النتيجة */
+        const ccy = 680;
+        const r = 132;
+        ctx.lineWidth = 22;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+        ctx.beginPath();
+        ctx.arc(W / 2, ccy, r, 0, Math.PI * 2);
+        ctx.stroke();
+        if (pct > 0) {
+            ctx.strokeStyle = accent;
+            ctx.beginPath();
+            ctx.arc(W / 2, ccy, r, -Math.PI / 2, -Math.PI / 2 + (Math.PI * 2 * pct) / 100);
+            ctx.stroke();
         }
+        ctx.fillStyle = '#f5f5f5';
+        ctx.font = "900 104px " + FONT;
+        ctx.fillText(pct + '%', W / 2, ccy + 36);
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = "500 32px " + FONT;
+        ctx.fillText('إجابات صحيحة: ' + (lastResult ? lastResult.correct : 0) + ' من ' + (lastResult ? lastResult.total : 0), W / 2, ccy + r + 74);
+
+        /* شارة النجاح */
+        const vtext = pass ? 'ناجح — مبروك' : 'غير مجتاز';
+        ctx.font = "900 40px " + FONT;
+        const vw = ctx.measureText(vtext).width + 96;
+        const vh = 76;
+        const vy = ccy + r + 104;
+        ctx.fillStyle = pass ? 'rgba(134,224,167,0.12)' : 'rgba(255,156,138,0.12)';
+        ctx.strokeStyle = pass ? 'rgba(134,224,167,0.45)' : 'rgba(255,156,138,0.45)';
+        ctx.lineWidth = 2;
+        roundRectPath(ctx, W / 2 - vw / 2, vy, vw, vh, vh / 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = accent;
+        ctx.fillText(vtext, W / 2, vy + 52);
+
+        /* بيانات المتقدم */
+        const iy = vy + vh + 84;
+        const nm = (identity.name || '—');
+        ctx.fillStyle = '#f5f5f5';
+        drawFit(ctx, nm, W - 260, 42, '800');
+        ctx.fillText(nm, W / 2, iy);
+        ctx.fillStyle = '#cbb5a4';
+        ctx.font = "600 29px " + FONT;
+        ctx.fillText('ديسكورد: \u2066' + (identity.discord || '—') + '\u2069', W / 2, iy + 50);
+        ctx.save();
+        ctx.direction = 'ltr';
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = "500 26px " + FONT;
+        ctx.fillText('ID: ' + (identity.discordId || '—'), W / 2, iy + 92);
+        ctx.restore();
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = "500 26px " + FONT;
+        const dateStr = new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+        ctx.textAlign = 'right';
+        ctx.fillText('العمر: ' + (identity.age || '—'), W / 2 - 24, iy + 134);
+        ctx.textAlign = 'left';
+        ctx.fillText(dateStr, W / 2 + 24, iy + 134);
+        ctx.textAlign = 'center';
+
+        /* التذييل */
+        ctx.strokeStyle = 'rgba(224,181,146,0.14)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(150, H - 178);
+        ctx.lineTo(W - 150, H - 178);
+        ctx.stroke();
+        ctx.fillStyle = '#e0b592';
+        ctx.font = "800 30px " + FONT;
+        ctx.fillText('discord.gg/rm8', W / 2, H - 124);
+        ctx.fillStyle = '#8a8a8a';
+        ctx.font = "400 24px " + FONT;
+        ctx.fillText('اختبارات الأكاديمية الذكية · محافظة الرمح', W / 2, H - 82);
+
+        return c;
+    }
+
+    function fileName() {
+        return 'ramah-quiz-' + (quizId || 'result') + '-' + (lastResult ? lastResult.pct : 0) + '.png';
+    }
+
+    function getCardBlob() {
+        if (cardBlob) return Promise.resolve(cardBlob);
+        if (cardBuilding) return cardBuilding;
+        cardBuilding = buildCard().then((canvas) => new Promise((resolve, reject) => {
+            if (canvas.toBlob) {
+                canvas.toBlob((b) => { if (b) resolve(b); else reject(new Error('toBlob failed')); }, 'image/png');
+            } else {
+                try {
+                    const data = canvas.toDataURL('image/png').split(',')[1];
+                    const bin = atob(data);
+                    const arr = new Uint8Array(bin.length);
+                    for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+                    resolve(new Blob([arr], { type: 'image/png' }));
+                } catch (e) { reject(e); }
+            }
+        })).then((blob) => {
+            cardBlob = blob;
+            cardBuilding = null;
+            return blob;
+        }).catch((err) => {
+            cardBuilding = null;
+            throw err;
+        });
+        return cardBuilding;
+    }
+
+    async function showCard() {
+        if (!lastResult) return null;
+        setHint('جارٍ إنشاء الصورة…');
+        try {
+            const blob = await getCardBlob();
+            if (cardUrl) URL.revokeObjectURL(cardUrl);
+            cardUrl = URL.createObjectURL(blob);
+            el('resultImg').src = cardUrl;
+            el('downloadBtn').href = cardUrl;
+            el('downloadBtn').setAttribute('download', fileName());
+            el('imageWrap').classList.remove('hidden');
+            setHint('✅ الصورة جاهزة — نزّلها أو انسخها أو شاركها.');
+            return blob;
+        } catch (e) {
+            setHint('تعذر إنشاء الصورة على هذا المتصفح — استخدم «نسخ كنص».');
+            return null;
+        }
+    }
+
+    async function copyImage() {
+        if (!lastResult) return;
+        try {
+            const blob = await getCardBlob();
+            if (!navigator.clipboard || !window.ClipboardItem) throw new Error('unsupported');
+            await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+            await showCard();
+            setHint('✅ تم نسخ الصورة — الصقها في الديسكورد.');
+        } catch (e) {
+            await showCard();
+            setHint('تعذر نسخ الصورة — نزّلها واحفظها بدل ذلك.');
+        }
+    }
+
+    async function shareResult() {
+        if (!lastResult) return;
+        const title = 'نتيجة ' + (quiz ? quiz.title : 'اختبار');
+        const text = resultText();
+        let blob = null;
+        try { blob = await getCardBlob(); } catch (e) {}
+
+        let file = null;
+        if (blob && window.File) {
+            try { file = new File([blob], fileName(), { type: 'image/png' }); } catch (e) {}
+        }
+
+        if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+                await navigator.share({ files: [file], title: title, text: text });
+                setHint('✅ تمت المشاركة.');
+                return;
+            } catch (e) {
+                if (e && e.name === 'AbortError') return;
+            }
+        }
+        if (navigator.share) {
+            try {
+                await navigator.share({ title: title, text: text });
+                setHint('✅ تمت المشاركة.');
+                return;
+            } catch (e) {
+                if (e && e.name === 'AbortError') return;
+            }
+        }
+
+        await copyText(text);
+        const shown = await showCard();
+        setHint(shown
+            ? 'المشاركة المباشرة غير مدعومة على هذا المتصفح — نُسخ النص وفُتحت الصورة لتنزيلها.'
+            : 'المشاركة المباشرة غير مدعومة على هذا المتصفح — نُسخ النص، أرسله في الديسكورد.');
     }
 
     /* ============ الأحداث ============ */
@@ -665,7 +1036,10 @@
     });
 
     el('retryBtn').addEventListener('click', () => startQuiz());
-    el('copyBtn').addEventListener('click', copyResult);
+    el('copyBtn').addEventListener('click', () => copyText(resultText()));
+    el('imageBtn').addEventListener('click', showCard);
+    el('copyImgBtn').addEventListener('click', copyImage);
+    el('shareBtn').addEventListener('click', shareResult);
 
     document.addEventListener('keydown', (e) => {
         if (views.exam.classList.contains('hidden')) return;
