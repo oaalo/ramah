@@ -1,5 +1,11 @@
 # الأكاديمية الذكية – الهلال الأحمر لمحافظة الرمح
 
+**الرابط المباشر للموقع:** <https://oaalo.github.io/ramah/>
+
+المستودع: <https://github.com/oaalo/ramah>
+
+> أي تعديل ترفعه على فرع `main` يظهر تلقائياً على الموقع خلال دقيقة تقريباً.
+
 موقع تعريفي وتدريبي (HTML/CSS/JS ثابت بدون أي أدوات بناء) يحتوي على:
 
 - الصفحة الرئيسية مع الأقسام: القوانين، التوظيف، الدورات، المكافآت
@@ -32,7 +38,7 @@ git remote add origin https://github.com/<اسم-الحساب>/<اسم-المس�
 git push -u origin main
 ```
 
-3. من المستودع: **Settings → Pages**، اختر **Source: Deploy from a branch** ثم **Branch: main / (root)** واضغط Save.
+3. من المستودع: **Settings → Pages**، اختر **Source: Deploy from a branch** ثم **Branch: main / (root)** واضغط Save (تم إعدادها مسبقاً في مستودع `ramah`).
 4. بعد دقيقة يصبح الرابط:
 
 ```
