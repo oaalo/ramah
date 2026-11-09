@@ -685,10 +685,10 @@
 
         <div class="nav-links">
             <a href="./" onclick="scrollToHome(); return false;">الرئيسية</a>
-            <a href="./laws" onclick="loadContent('laws'); return false;">القوانين</a>
-            <a href="./job" onclick="loadContent('job'); return false;">التوظيف</a>
-            <a href="./careers" onclick="loadContent('careers'); return false;">الدورات</a>
-            <a href="./rewards" onclick="loadContent('rewards'); return false;">المكافآت</a>
+            <a href="index.html?section=laws" onclick="loadContent('laws'); return false;">القوانين</a>
+            <a href="index.html?section=job" onclick="loadContent('job'); return false;">التوظيف</a>
+            <a href="index.html?section=careers" onclick="loadContent('careers'); return false;">الدورات</a>
+            <a href="index.html?section=rewards" onclick="loadContent('rewards'); return false;">المكافآت</a>
         </div>
 
         <div class="navbar-right">
@@ -719,25 +719,25 @@
 
     <!-- ===== البطاقات ===== -->
     <div class="sections-grid" id="sectionsGrid">
-        <a class="section-card" href="./laws" onclick="loadContent('laws'); return false;">
+        <a class="section-card" href="index.html?section=laws" onclick="loadContent('laws'); return false;">
             <span class="icon">📜</span>
             <h3>القوانين</h3>
             <p>اللوائح والأنظمة والمخالفات</p>
             <span class="arrow">←</span>
         </a>
-        <a class="section-card" href="./job" onclick="loadContent('job'); return false;">
+        <a class="section-card" href="index.html?section=job" onclick="loadContent('job'); return false;">
             <span class="icon">💼</span>
             <h3>منصة التوظيف</h3>
             <p>فرص لإزدهار شباب المستقبل</p>
             <span class="arrow">←</span>
         </a>
-        <a class="section-card" href="./careers" onclick="loadContent('careers'); return false;">
+        <a class="section-card" href="index.html?section=careers" onclick="loadContent('careers'); return false;">
             <span class="icon">🏆</span>
             <h3>منصة الدورات</h3>
             <p>فرص العمل ودورات التدريبية</p>
             <span class="arrow">←</span>
         </a>
-        <a class="section-card" href="./rewards" onclick="loadContent('rewards'); return false;">
+        <a class="section-card" href="index.html?section=rewards" onclick="loadContent('rewards'); return false;">
             <span class="icon">🎁</span>
             <h3>نظام المكافآت</h3>
             <p>آليات التقدير والحوافز</p>
@@ -786,42 +786,43 @@
         // ================================================================
         (function restoreCleanUrl() {
             const redirectPath = sessionStorage.getItem('redirectPath');
-            if (redirectPath) {
-                sessionStorage.removeItem('redirectPath');
-                history.replaceState(null, '', redirectPath);
-            }
+            if (!redirectPath) return;
+            sessionStorage.removeItem('redirectPath');
+
+            // روابط قديمة مثل /ramah/laws تُحوّل إلى رابط صحيح لا يرجع 404
+            const seg = (redirectPath.split('/').filter(Boolean).pop() || '').replace(/\.html?$/i, '');
+            const clean = /^(laws|job|careers|rewards)$/.test(seg) ? seg : 'home';
+            history.replaceState(
+                { section: clean },
+                '',
+                clean === 'home' ? window.location.pathname : `?section=${clean}`
+            );
         })();
 
         // ================================================================
         //  2) تحديد القسم المطلوب من الرابط
         // ================================================================
         function getSectionFromUrl() {
-            let path = window.location.pathname;
-            path = path.replace(/\/$/, '');
-            const parts = path.split('/');
-            const last = parts[parts.length - 1] || '';
             const validSections = ['laws', 'job', 'careers', 'rewards'];
+
+            // 1) الرابط القياسي: ?section=laws
+            const fromQuery = new URLSearchParams(window.location.search).get('section');
+            if (fromQuery && validSections.includes(fromQuery)) return fromQuery;
+
+            // 2) توافق مع الروابط القديمة: /ramah/laws
+            let path = window.location.pathname.replace(/\/$/, '');
+            const last = path.split('/').pop() || '';
             return validSections.includes(last) ? last : 'home';
         }
 
         // ================================================================
         //  3) تحديث الرابط عند التنقل (بدون إعادة تحميل الصفحة)
         // ================================================================
-        // المسار الأساسي يُحتسب تلقائياً (يعمل على GitHub Pages أو أي استضافة أخرى)
-        const URL_SECTIONS = ['laws', 'job', 'careers', 'rewards'];
-
-        function basePath() {
-            const parts = window.location.pathname.split('/').filter(Boolean);
-            if (parts.length && /\.html?$/i.test(parts[parts.length - 1])) parts.pop();
-            if (parts.length && URL_SECTIONS.includes(parts[parts.length - 1])) parts.pop();
-            return parts.length ? '/' + parts.join('/') : '';
-        }
-
         function updateUrl(section) {
-            const base = basePath();
-            const newPath = section === 'home' ? `${base}/` : `${base}/${section}`;
-            if (window.location.pathname !== newPath) {
-                history.pushState({ section: section }, '', newPath);
+            const query = section === 'home' ? '' : `?section=${section}`;
+            const newUrl = `${window.location.pathname}${query}`;
+            if (window.location.pathname + window.location.search !== newUrl) {
+                history.pushState({ section: section }, '', newUrl);
             }
         }
 
