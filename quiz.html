@@ -363,6 +363,11 @@
                 </div>
             </div>
             <p class="muted" id="copyHint" role="status" aria-live="polite" style="text-align:center;font-size:0.85rem;min-height:1.4em;margin-top:0.8rem;"></p>
+            <p class="muted" style="text-align:center;font-size:0.82rem;margin-top:0.2rem;">
+                <i class="fas fa-scale-balanced" style="color:#d18b68;"></i>
+                مشاركتك للنتيجة تعني موافقتك على
+                <a href="rights.html" style="color:#e3b295;font-weight:800;text-decoration:none;">الحقوق وشروط الاستخدام</a>
+            </p>
         </div>
         <h2 style="margin-top:1.6rem;"><i class="fas fa-list-check" style="color:#d18b68;margin-left:0.4rem;"></i> مراجعة الإجابات</h2>
         <div class="review" id="reviewList"></div>
@@ -905,6 +910,9 @@
         ctx.fillStyle = '#8a8a8a';
         ctx.font = "400 24px " + FONT;
         ctx.fillText('اختبارات الأكاديمية الذكية · مدينة الرمح', W / 2, H - 82);
+        ctx.fillStyle = '#6f7378';
+        ctx.font = "400 20px " + FONT;
+        ctx.fillText('oaalo.github.io/ramah/rights.html', W / 2, H - 44);
 
         return c;
     }

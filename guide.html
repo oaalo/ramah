@@ -168,6 +168,19 @@
             .header-left { flex-wrap: wrap; }
             .exam-btn { padding: 10px 20px; font-size: 0.9rem; }
         }
+        .page-footer {
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            flex-wrap: wrap; margin-top: 1.6rem; padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.88rem; color: #94a3b8; text-align: center;
+        }
+        .page-footer a {
+            color: #e3b295; text-decoration: none; font-weight: 800;
+            background: rgba(255,255,255,0.04); padding: 6px 16px;
+            border-radius: 40px; border: 1px solid rgba(255,255,255,0.06);
+            transition: 0.3s;
+        }
+        .page-footer a:hover { background: rgba(255,255,255,0.08); color: #e6c0a4; }
     </style>
 </head>
 <body>
@@ -184,6 +197,9 @@
         <button class="nav-btn" id="prevBtn" disabled><i class="fas fa-chevron-right"></i> السابق</button>
         <div class="dots" id="dotsContainer"></div>
         <button class="nav-btn primary" id="nextBtn">التالي <i class="fas fa-chevron-left"></i></button>
+    <div class="page-footer">
+        <a href="rights.html"><i class="fas fa-scale-balanced"></i> الحقوق وشروط الاستخدام</a>
+        <span>© 2026 جهاد 511 (.ji.) وNJM</span>
     </div>
 </div>
 
