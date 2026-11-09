@@ -1,4 +1,4 @@
-# الأكاديمية الذكية – الهلال الأحمر لمحافظة الرمح
+# الأكاديمية الذكية – الهلال الأحمر لمدينة الرمح
 
 **الرابط المباشر للموقع:** <https://oaalo.github.io/ramah/>
 
@@ -12,7 +12,7 @@
 - صفحات محتوى داخلية: `laws-content.html`، `job-content.html`، `careers-content.html`، `rewards-content.html`
 - سلايدات الدورات: `guide.html`، `operations.html`، `supervisor.html`، `air-support.html`
 - الاختبارات الداخلية: `quiz.html` + بنك الأسئلة `quiz-data.js`
-- شعار المحافظة: `logo.png` (ثابت، 256×256) و`logo.gif` (متحرك، يظهر مرة واحدة في واجهة الرئيسية)
+- شعار المدينة: `logo.png` (ثابت، 256×256) و`logo.gif` (متحرك، يظهر مرة واحدة في واجهة الرئيسية)
 - صفحة `404.html` تعمل مع الروابط النظيفة (مثل `/laws`) عبر GitHub Pages
 
 ## المعاينة محلياً
@@ -33,7 +33,7 @@ python -m http.server 8123
 ```bash
 git init
 git add .
-git commit -m "موقع الأكاديمية الذكية - محافظة الرمح"
+git commit -m "موقع الأكاديمية الذكية - مدينة الرمح"
 git branch -M main
 git remote add origin https://github.com/<اسم-الحساب>/<اسم-المستودع>.git
 git push -u origin main
@@ -98,5 +98,5 @@ https://<اسم-الحساب>.github.io/<اسم-المستودع>/
 ## تعديل البيانات
 
 - سيرفر الديسكورد: ابحث عن `discord.gg/rm8` في ملفات HTML.
-- اسم المحافظة: ابحث عن `محافظة الرمح`.
+- اسم المدينة: ابحث عن `مدينة الرمح`.
 - الشعار: استبدل `logo.png` (يُستخدم في الشريط العلوي والأيقونة وصورة المشاركة وبطاقة النتيجة) و`logo.gif` (الشعار المتحرك في الهيرو).
